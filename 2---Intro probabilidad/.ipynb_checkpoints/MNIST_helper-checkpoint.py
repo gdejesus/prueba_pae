@@ -1,7 +1,7 @@
 from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
-
+        
 def plot_number(x_train, y_train, number, show_label=True, figsize=(10, 5)):
     plt.imshow(x_train[number], cmap='gray')
     if show_label:
@@ -27,7 +27,7 @@ def plot_numbers(x_train, numbers, columns=10, show_label=True, figsize=(20, 5))
     
 def setHistogram(data, pixels,totPixel, row):
     hist = []
-    for pixel in pixeles:
+    for pixel in pixels:
         prob_pixel = (data[row] == pixel).sum() / totPixel
         hist.append(prob_pixel)
     return hist
@@ -53,8 +53,12 @@ def fit(images,labels,bins=256):
     models = []
     for i in range (len(categories)):
         models.append(getHist(images,labels,i,bins=256))
-    return models
+    return models    
 
-def predict(images):
-    hists = [np.histogram(img.flatten(),bins=256,range=[0,256],density=False) for img in images]
-    return [np.dot(hist,hist[0])+hist[1] for hist in hists]
+def predict(testImages, model):
+    hists = [np.histogram(img.flatten(),bins=256,range=[0,256],density=False)[0] for img in testImages]
+    predictions = [[np.matmul(m[0],hist)+m[1] for m in model] for hist in hists]
+    return [np.argmax(prediction) for prediction in predictions]
+
+def score(images,categories):
+    self.predict()
