@@ -24,12 +24,12 @@ def plot_numbers(x_train, numbers, columns=10, show_label=True, figsize=(20, 5))
     plt.imshow(concatenated, cmap='gray')
     plt.show()
     
-def defHistogram(data, pixels,totPixel):
+def setHistogram(data, pixels,totPixel, row):
     hist = []
     for pixel in pixeles:
-        prob_pixel = (mini_x_train_1[1] == pixel).sum() / totPixel
+        prob_pixel = (data[row] == pixel).sum() / totPixel
         hist.append(prob_pixel)
-        return hist
+    return hist
  
 def visualize_input(img, ax):
     ax.imshow(img, cmap='gray')
