@@ -1,5 +1,6 @@
 from matplotlib import pyplot as plt
 import numpy as np
+import pandas as pd
 
 def plot_number(x_train, y_train, number, show_label=True, figsize=(10, 5)):
     plt.imshow(x_train[number], cmap='gray')
@@ -41,3 +42,19 @@ def visualize_input(img, ax):
                         horizontalalignment='center',
                         verticalalignment='center',
                         color='white' if img[x][y]<thresh else 'black')
+            
+def getHist(images,labels,cat,bins=256):
+    priori = (labels == cat).sum()/len(labels)
+    hist = np.histogram(images[labels==cat].flatten(),bins=bins,range=[0,256],density=True)[0]
+    return np.log(hist),np.log(priori)
+
+def fit(images,labels,bins=256):
+    categories = set(labels)
+    models = []
+    for i in range (len(categories)):
+        models.append(getHist(images,labels,i,bins=256))
+    return models
+
+def predict(images):
+    hists = [np.histogram(img.flatten(),bins=256,range=[0,256],density=False) for img in images]
+    return [np.dot(hist,hist[0])+hist[1] for hist in hists]
