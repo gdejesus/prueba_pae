@@ -5,7 +5,7 @@ from ipykernel import kernelapp as app
 import helperGauss as helper
 
 class GaussModel:
-    def __init__(self,e=1e-8):
+    def __init__(self,labels,e=1e-8):
         self.epsilon=e
 
     def fit(self,images,labels):
@@ -24,8 +24,9 @@ class GaussModel:
             media = self.models[cat][0]
             desvio = self.models[cat][1]+self.epsilon
             Gaussian = norm(media,desvio)
+            #Solo si tenemos igual cantidad de valores sobre cada lista, podemos no castearlo a np.array
             predictions.append(np.log(Gaussian.pdf(testImages)).sum(axis=1))
-            #predictions = np.array(predictions)
+        #predictions = np.array(predictions)
         return np.argmax(predictions, axis=0)
         
     def score(self,images,categories):
