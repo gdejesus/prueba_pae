@@ -9,10 +9,12 @@ class GaussModel:
         self.epsilon=e
 
     def fit(self,images,labels):
+        self.categories = len(list(set(labels)))
+        print(len(list(set(labels))))
         self.means = list()
         self.stds = list()
         self.models = list()
-        for cat in range(10):
+        for cat in range(self.categories):
             self.means = np.mean(images[labels==cat])
             self.stds = np.std(images[labels==cat])
             self.models.append((self.means,self.stds))
@@ -20,7 +22,7 @@ class GaussModel:
     def predict(self,testImages):
         # .pdf funcion de densidad de probabilidad
         predictions = []
-        for cat in range(10):
+        for cat in range(self.categories):
             media = self.models[cat][0]
             desvio = self.models[cat][1]+self.epsilon
             Gaussian = norm(media,desvio)
